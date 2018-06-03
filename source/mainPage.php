@@ -125,7 +125,7 @@
       </div>
       <div class="col-sm-4">
         <div class="well well-lg text-center" style="background-color:#d9edf7; overflow: auto;"><h1>
-          <?php echo $student['firstname'] . ' ' .
+          <?php echo '*******' . $student['firstname'] . ' ' .
                 $student['lastname'] . "<br/>" .
                 $student['standing'];
           ?>
