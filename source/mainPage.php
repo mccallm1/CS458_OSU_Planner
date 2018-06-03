@@ -120,12 +120,13 @@
   ?>
 
   <body>
+
     <div class="row">
       <div class="col-sm-4">
       </div>
       <div class="col-sm-4">
         <div class="well well-lg text-center" style="background-color:#d9edf7; overflow: auto;"><h1>
-          <?php echo '*******' . $student['firstname'] . ' ' .
+          <?php $student['firstname'] . ' ' .
                 $student['lastname'] . "<br/>" .
                 $student['standing'];
           ?>
@@ -185,7 +186,9 @@
             echo "<div class=\"panel-heading text-center\" style=\"background-color:#fcf8e3; overflow: auto;\">"; // Yellow
           }
             echo "<font color=\"black\"> <h2>Winter 2015</h2> </font> </div>";
-          ?> <p><br></p>
+          ?>
+
+          <p><br></p>
 
           <?php
             foreach ($winter_term as $course) {
