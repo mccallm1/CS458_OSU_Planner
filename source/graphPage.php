@@ -118,9 +118,7 @@
     window.onload = function () {
       var chart = new CanvasJS.Chart("chartContainer", {
       	animationEnabled: true,
-      	title:{
-      		text: "<?php echo $student['firstname'] . ' ' . $student['lastname']; ?> - Career Progress "
-      	},
+
       	axisY: {
       		title: "Number of Credits",
       		titleFontColor: "#4F81BC",
@@ -192,7 +190,8 @@
   </head>
 
   <body>
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  
+    <div id="chartContainer" style="height: 600px; width: 100%;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   </body>
 </html>

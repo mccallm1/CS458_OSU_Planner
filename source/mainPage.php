@@ -50,8 +50,8 @@
   ?>
 
   <?php
-    // Fall
-    $sql = "SELECT name,credits,course_time,course_completed FROM Course,Schedule WHERE Schedule.course_id = Course.id AND term = 'F14' LIMIT 4";
+    // Fetch ALL classes student has associated with ID
+    $sql = "SELECT name,term,credits,course_completed FROM Course,Schedule WHERE Schedule.student_id = '1' AND Course.id = Schedule.course_id ";
 
     if (!$result = $conn->query($sql)) {
       echo "Error: Query failed to execute: <br/>";
@@ -62,205 +62,444 @@
       exit;
     }
 
-    $i = 0;
+    $credits_taken = 0;
+    $credits_earned = 0;
+
+    $fr_fall = [];
+    $fr_winter = [];
+    $fr_spring = [];
+
+    $so_fall = [];
+    $so_winter = [];
+    $so_spring = [];
+
+    $ju_fall = [];
+    $ju_winter = [];
+    $ju_spring = [];
+
+    $se_fall = [];
+    $se_winter = [];
+    $se_spring = [];
+
+    $courses = [];
     while ($course = $result->fetch_assoc()) {
-      $fall_term[$i] = $course;
-      if ($course['course_completed'] > 0) {
-        $fall_credits += $course['credits'];
+      $courses[] = $course;
+      if ($course['course_completed'] == 1) {
+        $credits_earned += $course['credits'];
       }
-      $fall_comp_sum += $course['course_completed'];
-      $i++;
-    }
-  ?>
-  <?php
-    // Winter
-    $sql = "SELECT name,credits,course_time,course_completed FROM Course,Schedule WHERE Schedule.course_id = Course.id AND term = 'W15' LIMIT 3";
+      $credits_taken += $course['credits'];
 
-    if (!$result = $conn->query($sql)) {
-      echo "Error: Query failed to execute: <br/>";
-      exit;
-    }
-    if ($result->num_rows === 0) {
-      echo "Query empty. <br/>";
-      exit;
-    }
+      switch ($course['term']) {
+        case 'F14':
+          $fr_fall = $course;
+          break;
+        case 'W15':
+          $fr_winter = $course;
+          break;
+        case 'SP15':
+          $fr_spring = $course;
+          break;
 
-    $i = 0;
-    while ($course = $result->fetch_assoc()) {
-      $winter_term[$i] = $course;
-      if ($course['course_completed'] > 0) {
-        $winter_credits += $course['credits'];
+        case 'F15':
+          $so_fall = $course;
+          break;
+        case 'W16':
+          $so_winter = $course;
+          break;
+        case 'SP16':
+          $so_spring = $course;
+          break;
+
+        case 'F16':
+          $ju_fall = $course;
+          break;
+        case 'W17':
+          $ju_winter = $course;
+          break;
+        case 'SP17':
+          $ju_spring = $course;
+          break;
+
+        case 'F17':
+          $se_fall = $course;
+          break;
+        case 'W18':
+          $se_winter = $course;
+          break;
+        case 'SP18':
+          $se_spring = $course;
+          break;
       }
-      $winter_comp_sum += $course['course_completed'];
-      $i++;
-    }
-  ?>
-  <?php
-    // Spring
-    $sql = "SELECT name,credits,course_time,course_completed FROM Course,Schedule WHERE Schedule.course_id = Course.id AND  term = 'SP15' LIMIT 4";
-
-    if (!$result = $conn->query($sql)) {
-      echo "Error: Query failed to execute: <br/>";
-      exit;
-    }
-    if ($result->num_rows === 0) {
-      echo "Query empty. <br/>";
-      exit;
     }
 
-    $i = 0;
-    while ($course = $result->fetch_assoc()) {
-      $spring_term[$i] = $course;
-      if ($course['course_completed'] > 0) {
-        $spring_credits += $course['credits'];
-      }
-      $spring_comp_sum += $course['course_completed'];
-      $i++;
-    }
+
+
   ?>
 
   <body>
 
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-xs-3">
+        <div class="page-header text-center font-size:18px">
+          <b>
+            <?php echo $student['firstname'] . ' ' .
+                  $student['lastname'] . "<br/>" .
+                  $student['standing'];
+            ?>
+          </b>
+        </div>
       </div>
-      <div class="col-sm-4">
-        <div class="well well-lg text-center" style="background-color:#d9edf7; overflow: auto;"><h1>
-          <?php $student['firstname'] . ' ' .
-                $student['lastname'] . "<br/>" .
-                $student['standing'];
-          ?>
-        </h1></div>
-      </div>
-      <div class="col-sm-4">
+      <div class="col-xs-3"></div>
+      <div class="col-xs-3"></div>
+      <div class="col-xs-3 center-block text-center">
+        <p></br></p>
+        <button type="button" class="btn btn-info btn-lg">
+          Graph
+        </button>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="panel panel-success">
-          <?php
-            if ($fall_comp_sum == sizeof($fall_term)) {
-              echo "<div class=\"panel-heading text-center\" style=\"background-color:#d6e9c6; overflow: auto;\">"; // Green
-            } else {
-              echo "<div class=\"panel-heading text-center\" style=\"background-color:#fcf8e3; overflow: auto;\">"; // Yellow
-            }
-            echo "<font color=\"black\"> <h2>Fall 2014</h2> </font></div>";
-          ?> <p><br></p>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-3 center-block text-center">
+          <p></br></br></p>
+          <button type="button" class="btn btn-info btn-lg">
+            2014 - 2015
+          </button>
+        </div>
 
-          <?php
-            foreach ($fall_term as $course) {
-              if ($course['course_completed'] == 0) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; overflow: auto;\">";
-              }
-              elseif ($course['course_completed'] == 2) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; overflow: auto;\">";
-              }
-              else {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; overflow: auto;\">";
-              }
-
-                echo $course['name'] . ' - ' .
-                  $course['credits'] . " credits <br/>";
-
-              echo "</div>";
-            }
-          ?>
-
-          <div class="well well-xs text-left col-sm-offset-3" style="background-color:#d9edf7; overflow: auto;">
+        <div class="col-xs-3">
+          <div class="panel panel-success">
             <?php
-              echo $fall_credits . " Term Credits" . "<br/>";
-              echo $fall_credits . " Credits Completed"  . "<br/>";
+              echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+              echo "<font color=\"black\"><b> Fall 2014 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_fall as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"><b> Winter 2015 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_winter as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"> <b> Spring 2015 </b> </font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_spring as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
             ?>
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-3 center-block text-center">
+          <p></br></br></p>
+          <button type="button" class="btn btn-info btn-lg">
+            2014 - 2015
+          </button>
+        </div>
 
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="panel panel-success" border-color="black">
-          <?php
-          if ($winter_comp_sum == sizeof($winter_term)) {
-            echo "<div class=\"panel-heading text-center\" style=\"background-color:#d6e9c6; overflow: auto;\">"; // Green
-          } else {
-            echo "<div class=\"panel-heading text-center\" style=\"background-color:#fcf8e3; overflow: auto;\">"; // Yellow
-          }
-            echo "<font color=\"black\"> <h2>Winter 2015</h2> </font> </div>";
-          ?>
-
-          <p><br></p>
-
-          <?php
-            foreach ($winter_term as $course) {
-              if ($course['course_completed'] == 0) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; overflow: auto;\">";
-              }
-              elseif ($course['course_completed'] == 2) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; overflow: auto;\">";
-              }
-              else {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; overflow: auto;\">";
-              }
-
-                echo $course['name'] . ' - ' .
-                  $course['credits'] . " credits <br/>";
-
-              echo "</div>";
-            }
-          ?>
-
-          <div class="well well-xs text-left col-sm-offset-3" style="background-color:#d9edf7; overflow: auto;">
+        <div class="col-xs-3">
+          <div class="panel panel-success">
             <?php
-              echo $winter_credits . " Term Credits" . "<br/>";
-              echo $fall_credits + $winter_credits . " Credits Completed"  . "<br/>";
+              echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+              echo "<font color=\"black\"><b> Fall 2014 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_fall as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"><b> Winter 2015 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_winter as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"> <b> Spring 2015 </b> </font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_spring as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
             ?>
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-3 center-block text-center">
+          <p></br></br></p>
+          <button type="button" class="btn btn-info btn-lg">
+            2014 - 2015
+          </button>
+        </div>
 
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="panel panel-success">
-          <?php
-          if ($spring_comp_sum == sizeof($spring_term)) {
-            echo "<div class=\"panel-heading text-center\" style=\"background-color:#d6e9c6; overflow: auto;\">"; // Green
-          } else {
-            echo "<div class=\"panel-heading text-center\" style=\"background-color:#fcf8e3; overflow: auto;\">"; // Yellow
-          }
-            echo "<font color=\"black\"> <h2>Spring 2015</h2> </font> </div>";
-          ?> <p><br></p>
-
-          <?php
-            foreach ($spring_term as $course) {
-              if ($course['course_completed'] == 0) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; overflow: auto;\">";
-              }
-              elseif ($course['course_completed'] == 2) {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; overflow: auto;\">";
-              }
-              else {
-                echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; overflow: auto;\">";
-              }
-
-                echo $course['name'] . ' - ' .
-                  $course['credits'] . " credits <br/>";
-
-              echo "</div>";
-            }
-          ?>
-
-
-          <div class="well well-xs text-left col-sm-offset-3"  style="background-color:#d9edf7; overflow: auto;">
+        <div class="col-xs-3">
+          <div class="panel panel-success">
             <?php
-              echo $spring_credits . " Term Credits" . "<br/>";
-              echo $fall_credits + $winter_credits + $spring_credits . " Credits Completed"  . "<br/>";
+              echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+              echo "<font color=\"black\"><b> Fall 2014 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_fall as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"><b> Winter 2015 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_winter as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"> <b> Spring 2015 </b> </font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_spring as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
             ?>
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-3 center-block text-center">
+          <p></br></br></p>
+          <button type="button" class="btn btn-info btn-lg">
+            2014 - 2015
+          </button>
+        </div>
 
+        <div class="col-xs-3">
+          <div class="panel panel-success">
+            <?php
+              echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+              echo "<font color=\"black\"><b> Fall 2014 </b></font> </div>";
+            ?>
 
+            <?php
+              foreach ($fr_fall as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
 
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"><b> Winter 2015 </b></font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_winter as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="panel panel-warning">
+            <?php
+            echo "<div class=\"panel-heading text-center\" style=\"overflow:auto; font-size:16px\">";
+            echo "<font color=\"black\"> <b> Spring 2015 </b> </font> </div>";
+            ?>
+
+            <?php
+              foreach ($fr_spring as $course) {
+                if ($course['course_completed'] == 0) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                }
+                elseif ($course['course_completed'] == 2) {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                }
+                else {
+                  echo "<div class=\"well well-xs text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                }
+
+                echo $course['name'] . "<br/>";
+                echo "</div>";
+              }
+            ?>
+          </div>
+        </div>
+      </div>
   </body>
 
 </html>
