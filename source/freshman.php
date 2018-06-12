@@ -133,7 +133,8 @@
         </a>
       </div>
     </div>
-    <div class="container"> <!-- One Year View -->
+    <div class="container-fluid"> <!-- One Year View -->
+
       <div class="row"> <!-- Freshman -->
         <div class="col-xs-4"> <!-- Freshman Fall -->
           <?php
@@ -153,27 +154,31 @@
             // Courses
             foreach ($fr_fall as $course) {
               if ($course['course_completed'] == 0) { // Red
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede;
+                  margin:20px; margin-left:110px; overflow:auto;\">";
               }
               elseif ($course['course_completed'] == 2) { // Yellow
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3;
+                  margin:20px; margin-left:110px; overflow: auto;\">";
               }
               else { // Green
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6;
+                  margin:20px; margin-left:110px; overflow: auto;\">";
               }
               echo $course['name'] . ' - ' .
                   $course['credits'] . " credits";
               echo "</div>";
             }
-            #echo "<div class=\"panel panel-success text-center col-sm-offset-3 \"> "; // Green
-            echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d9edf7;\">";
-            echo $fr_fa_possible . " Term Credits" . "<br/>";
-            echo $fr_fa_sum . " Credits Completed"  . "<br/>";
+            echo "<div class=\"well-credits text-center col-sm-offset-3\" style=\"overflow: auto; height: 55px;
+              margin:20px; margin-left:110px; overflow: auto;\">";
+            echo "<font color=\"white\">";
+              echo $fr_fa_possible . " Term Credits" . "<br/>";
+              echo $fr_fa_sum . " Credits Completed"  . "<br/>";
+            echo "</font>";
           ?>
             </div>
           </div>
         </div>
-
         <div class="col-xs-4"> <!-- Freshman Winter -->
           <?php
             // Term color logic
@@ -192,21 +197,31 @@
             // Courses
             foreach ($fr_winter as $course) {
               if ($course['course_completed'] == 0) { // Red
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede;
+                  margin:20px; margin-left:110px; overflow:auto;\">";
               }
               elseif ($course['course_completed'] == 2) { // Yellow
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3;
+                  margin:20px; margin-left:110px; overflow: auto;\">";
               }
               else { // Green
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6;
+                  margin:20px; margin-left:110px; overflow: auto;\">";
               }
-              echo $course['name'];
+              echo $course['name'] . ' - ' .
+                  $course['credits'] . " credits";
               echo "</div>";
             }
-            echo "</div>";
+            echo "<div class=\"well-credits text-center col-sm-offset-3\" style=\"overflow: auto; height: 55px;
+            margin:20px; margin-left:110px; overflow: auto;\">";
+            echo "<font color=\"white\">";
+              echo $fr_wi_possible . " Term Credits" . "<br/>";
+              echo $fr_wi_sum . " Credits Completed"  . "<br/>";
+            echo "</font>";
           ?>
+            </div>
+          </div>
         </div>
-
         <div class="col-xs-4"> <!-- Freshman Spring -->
           <?php
             // Term color logic
@@ -225,20 +240,32 @@
             // Courses
             foreach ($fr_spring as $course) {
               if ($course['course_completed'] == 0) { // Red
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#f2dede; border-color:#f2dede;
+                  margin-left:auto; overflow:auto;\">";
               }
               elseif ($course['course_completed'] == 2) { // Yellow
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#fcf8e3; border-color:#fcf8e3;
+                  margin-left:auto; overflow: auto;\">";
               }
               else { // Green
-                echo "<div class=\"well text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6; overflow: auto;\">";
+                echo "<div class=\"well-year-class text-center col-sm-offset-3\" style=\"background-color:#d6e9c6; border-color:#d6e9c6;
+                  margin-left:auto; overflow: auto;\">";
               }
-              echo $course['name'];
+              echo $course['name'] . ' - ' .
+                  $course['credits'] . " credits";
               echo "</div>";
             }
-            echo "</div>";
+            echo "<div class=\"well-credits text-center col-sm-offset-3\" style=\"overflow: auto; height: 55px;
+            margin: 0 auto; margin-bottom: 20px; overflow: auto;\">";
+            echo "<font color=\"white\">";
+              echo $fr_sp_possible . " Term Credits" . "<br/>";
+              echo $fr_sp_sum . " Credits Completed"  . "<br/>";
+            echo "</font>";
           ?>
+            </div>
+          </div>
         </div>
+      </div>
 
       </div>
   </body>

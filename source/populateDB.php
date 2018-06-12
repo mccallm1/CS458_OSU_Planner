@@ -77,7 +77,7 @@
 	// Populate Tables
 		// Student
 			$sql = "INSERT INTO Student (`id`, `firstname`, `lastname`, `standing`)
-				VALUES (NULL, 'Jason', 'Harris', 'Freshman')";
+				VALUES (NULL, 'Jason', 'Harris', 'Junior')";
 			if ($conn->query($sql) === TRUE) {
 					echo "New record created successfully"."<br>";
 			} else {

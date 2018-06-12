@@ -369,8 +369,8 @@
       <div class="row"> <!-- Sophomore -->
         <div class="col-xs-3 center-block text-center">
           <p></br></br></p>
-          <a href="http://web.engr.oregonstate.edu/~mccallm/CS458/CS458_OSU_Planner/source/sophomore.php" button type="button" class="btn btn-info btn-lg">
-            2015 - 2016
+            <a href="" button type="button" class="btn btn-lg" style="background-color:#9e9e9e; border-color:#757575; overflow: auto;">
+              <font color="white">2015 - 2016</font>
           </a>
         </div>
 
@@ -477,8 +477,8 @@
       <div class="row"> <!-- Junior -->
         <div class="col-xs-3 center-block text-center">
           <p></br></br></p>
-          <a href="http://web.engr.oregonstate.edu/~mccallm/CS458/CS458_OSU_Planner/source/junior.php" button type="button" class="btn btn-info btn-lg">
-            2016 - 2017
+          <a href="" button type="button" class="btn btn-lg" style="background-color:#9e9e9e; border-color:#757575; overflow: auto;">
+            <font color="white">2016 - 2017</font>
           </a>
         </div>
 
@@ -585,8 +585,8 @@
       <div class="row"> <!-- Senior -->
         <div class="col-xs-3 center-block text-center">
           <p></br></br></p>
-          <a href="http://web.engr.oregonstate.edu/~mccallm/CS458/CS458_OSU_Planner/source/junior.php" button type="button" class="btn btn-info btn-lg">
-            2017 - 2018
+          <a href="" button type="button" class="btn btn-lg" style="background-color:#9e9e9e; border-color:#757575; overflow: auto;">
+            <font color="white">2017 - 2018</font>
           </a>
         </div>
 

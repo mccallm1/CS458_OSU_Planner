@@ -5818,6 +5818,28 @@ button.list-group-item-danger.active:focus {
 .embed-responsive-4by3 {
   padding-bottom: 75%;
 }
+
+.well-credits {
+  font-size: 16px;
+  min-height: 5px;
+  padding: 5px;
+  margin: 20px auto;
+  background-color: #5bc0de;
+  width: 50%;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+.well-year-class {
+  font-size: 16px;
+  min-height: 5px;
+  padding: 10px;
+  margin: 20px auto;
+  width: 50%;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
 .well {
   font-size: 12px;
   min-height: 5px;
